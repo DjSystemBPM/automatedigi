@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: logging
+spec:
+  selector:
+    app: kibana
+  ports:
+    - name: http1
+      port: 5601
+      targetPort: 5601
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: logging
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: 172.31.15.195/kibana-oss:6.6.0
+        # image: docker.elastic.co/kibana/kibana:7.5.2
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        ports:
+          - name: kibana
+            containerPort: 5601
+        env:
+          - name: "TZ"
+            value: "America/Mexico_City"
+          - name: ELASTICSEARCH_URL
+            value: http://elasticsearch:9200

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-bmu
+  labels:
+    app: gdit-digitus-ws-bmu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-bmu
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-bmu
+    spec:
+      containers:
+        - name: gdit-digitus-ws-idc-validation
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/gdit-digitus-ws-bmu:develop
+          ports:
+            - containerPort: 8080

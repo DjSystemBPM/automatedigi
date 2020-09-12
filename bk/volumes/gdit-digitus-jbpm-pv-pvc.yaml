@@ -1,0 +1,64 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: dev-jbpm-pv-git
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  glusterfs:
+    endpoints: glusterfs-cluster
+    path: gv19_bpm_testing_storage/jbpm/niogit
+    readOnly: false
+  persistentVolumeReclaimPolicy: Retain
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dev-jbpm-pvc-git
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: dev-jbpm-pv-m2
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  glusterfs:
+    endpoints: glusterfs-cluster
+    path: gv19_bpm_testing_storage/jbpm/m2
+    readOnly: false
+  persistentVolumeReclaimPolicy: Retain
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dev-jbpm-pvc-m2
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+

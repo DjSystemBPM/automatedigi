@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gdit-digitus-configmap
+data:
+  DATABASE_IP: "172.31.0.25"
+  DATABASE_PORT: "9999"
+  DATABASE_SCHEMA_DIGITUS: "0.1.4_db_digitus"
+  DATABASE_SCHEMA_BIOANALISIS: "db_bioanalisis"
+  DATABASE_SCHEMA_FUSION: "0.1.3_db_fusion" 
+  REDIS_IP: "gdit-digitus-service-redis"
+  REDIS_PORT: "6379"
+  REDIS_SCHEMA_CACHE: "5"
+  REDIS_SCHEMA_ENGINE: "6"
+  ACTIVEMQ_IP: "gdit-digitus-service-activemq"
+  ACTIVEMQ_PORT: "61616"
+  MONGO_IP: "gdit-digitus-service-mongodb"
+  MONGO_PORT: "27017"
+#  NEC_SERVICE: "http://172.31.4.182:8080/insights-ws/command/default/defaultCommandService"
+  NEC_SERVICE: "http://172.31.0.182:8080/insights-ws/command/default/defaultCommandService"
+  JBPM_DB_DRIVER: "postgres"
+  JBPM_DB_HOST: "172.31.0.25"
+  JBPM_DB_PORT: "9999"
+  JBPM_DB_NAME: "db_jbpm"
+  BPM_URL: "http://gdit-digitus-service-jbpm:8080"
+  BPM_CONTAINER: "Biometrics-core_2.0.0-SNAPSHOT"
+
+
+  #PROVISIONAL FUSION
+  POSTGRESQL_HOST: "172.31.0.25"
+  POSTGRESQL_PORT: "9999"
+  POSTGRESQL_SCHEMA_FUSION: "0.1.2_db_fusion"
+  POSTGRESQL_SCHEMA_STG: "db_staging_prod"  
+  POSTGRESQL_USER_FUSION: "usr_fusion"
+  POSTGRESQL_PASS_FUSION: "$UsrFs10n$"
+  POSTGRESQL_USER_STG: "usr_staging"
+  POSTGRESQL_PASS_STG: "$Usr3s4ll01$"
+  REDIS_HOST: "gdit-digitus-service-redis"
+  REDIS_DB_FUS: "3"
+  LOGSTASH_HOST: "logstash-in.development"
+  LOGSTASH_PORT: "12201"
+  ACTIVEMQ_HOST: "gdit-digitus-service-activemq"
+  ACTIVEMQ_PORT: "61616"

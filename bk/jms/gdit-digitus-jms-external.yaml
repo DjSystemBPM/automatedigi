@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-jms-external
+  labels:
+    app: gdit-digitus-jms-external
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-jms-external
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-jms-external
+    spec:
+      containers:
+        - name: gdit-digitus-jms-external
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/jms-digitus-external:0.0.12
+          env:
+            - name: "EXTERNAL_DB_URL"
+              value: "http://gdit-digitus-ws-external-db:8082/ws-digitus-external-db/digitus/"
+            - name: "GLUSTERFS_REST_URL"
+              value: "http://172.31.0.102:30891/ws-rest-gluster/digitus-upload"
+            - name: "API_CEPH_HOST"
+              value: "gdit-digitus-ws-ceph-storage"
+            - name: "API_CEPH_PORT"
+              value: "8080"
+            - name: "API_DB_HOST"
+              value: "gdit-digitus-ws-external-db"
+            - name: "API_DB_PORT"
+              value: "8082"
+            - name: "API_IDC_HOST"
+              value: "gdit-digitus-ws-idc-validation"
+            - name: "API_IDC_PORT"
+              value: "8080"
+            - name: "ACTIVEMQ_URL"
+              value: "tcp://gdit-digitus-service-activemq:61616"
+            - name: "ACTIVEMQ_IP"
+              value: "gdit-digitus-service-activemq"
+            - name: "ACTIVEMQ_HOST"
+              value: "gdit-digitus-service-activemq"
+            - name: "ACTIVEMQ_PORT"
+              value: "61616"
+            - name: "ACTIVEMQ_QUEUE"
+              value: "external-search-request"
+            - name: "ACTIVEMQ_PASSWORD"
+              value: "admin"
+            - name: "ACTIVEMQ_USER"
+              value: "admin"
+            - name: "TZ"
+              value: "America/Mexico_City"
+            - name: "CAMEL_PORT"
+              value: "8085"
+          ports:
+            - containerPort: 8085
+

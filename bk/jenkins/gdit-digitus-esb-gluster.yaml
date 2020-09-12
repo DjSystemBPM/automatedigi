@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-esb-gluster
+  labels:
+    app: gdit-digitus-esb-gluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-esb-gluster
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-esb-gluster
+    spec:
+      containers:
+      - name: gdit-digitus-esb-gluster
+        imagePullPolicy: Always
+        image: 172.31.15.195/gdit-digitus-esb-gluster:develop
+        ports:
+        - containerPort: 8085
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets

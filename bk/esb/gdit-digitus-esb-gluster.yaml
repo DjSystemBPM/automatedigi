@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-esb-gluster
+  labels:
+    app: gdit-digitus-esb-gluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-esb-gluster
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-esb-gluster
+    spec:
+      containers:
+        - name: gdit-digitus-esb-gluster
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/gdit-digitus-esb-gluster:develop
+          env:
+            - name: "ACTIVEMQ_URL"
+              value: "tcp://gdit-digitus-service-activemq:61616"
+            - name: "ACTIVEMQ_PASSWORD"
+              value: "admin"
+            - name: "ACTIVEMQ_USER"
+              value: "admin"
+            - name: "EFT_FILE_URL"
+              value: "http://gdit-digitus-ws-eft-file:8080/gdit-digitus-ws-eft-file/json2eft"
+            - name: "EXTERNAL_DB_URL"
+              value: "http://gdit-digitus-ws-external-db:8082/ws-digitus-external-db/digitus/"
+            - name: "PATH_RSA_KNOWN_HOST"
+              value: "known_hosts"
+            - name: "FTP_URL"
+              value: "172.31.5.182"
+            - name: "FTP_USER"
+              value: "nec"
+            - name: "FTP_PASSWORD"
+              value: "D!g!tus"
+            - name: "MONGO_REST_IBW_URL"
+              value: "http://gdit-digitus-ws-mongodb:8080/ibw/"
+            - name: "TZ"
+              value: "America/Mexico_City"
+          ports:
+            - containerPort: 8075
+          volumeMounts:
+            - name: dev-pv-esb-gluster-stakeholders
+              mountPath: "/home/gluster/stakeholders/"
+      volumes:
+      - name: dev-pv-esb-gluster-stakeholders
+        persistentVolumeClaim:
+          claimName: dev-pvc-esb-gluster-stakeholders

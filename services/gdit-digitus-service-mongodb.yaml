@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-mongodb
+  labels:
+    app: gdit-digitus-service-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-mongodb
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-mongodb
+    spec:
+      containers:
+      - name: gdit-digitus-service-mongodb
+        imagePullPolicy: Always
+        image: 172.31.15.195/mongo:latest
+        ports:
+        - containerPort: 27017
+        envFrom:
+          - secretRef:
+              name: gdit-digitus-secrets
+        volumeMounts:
+        - name: pv-service-mongodb-data
+          mountPath: "/data/db"
+      volumes:
+      - name: pv-service-mongodb-data
+        persistentVolumeClaim:
+          claimName: pvc-service-mongodb-data

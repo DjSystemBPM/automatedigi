@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-redis-engine-cache
+  labels:
+    app: gdit-digitus-ws-redis-engine-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-redis-engine-cache
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-redis-engine-cache
+    spec:
+      containers:
+      - name: gdit-digitus-ws-redis-engine-cache
+        imagePullPolicy: Always
+        image: 172.31.15.195/gdit-digitus-ws-redis-engine-cache:gto
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: gdit-digitus-configmap
+          - secretRef:
+              name: gdit-digitus-secrets

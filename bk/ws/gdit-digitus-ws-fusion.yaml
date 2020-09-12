@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-fusion
+  labels:
+    app: gdit-digitus-ws-fusion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-fusion
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-fusion
+    spec:
+      containers:
+      - name: gdit-digitus-ws-fusion
+        imagePullPolicy: Always
+        image: 172.31.15.195/gdit-digitus-ws-fusion:develop
+        ports:
+        - containerPort: 8081
+        env:
+          - name: "DATABASE_IP"
+            value: "172.31.0.25"
+          - name: "DATABASE_PORT"
+            value: "9999"
+          - name: "DATABASE_SCHEMA_FUSION"
+            value: "0.1.3_db_fusion"
+          - name: "DATABASE_USER_FUSION"
+            value: "usr_fusion"
+          - name: "DATABASE_PASS_FUSION"
+            value: "$UsrFs10n$"
+          - name: "MONGO_IP"
+            value: "gdit-digitus-service-mongodb"
+          - name: "MONGO_PORT"
+            value: "27017"
+          - name: "MONGO_USER"
+            value: "admin"
+          - name: "MONGO_PASS"
+            value: "admin"
+          - name: "ACTIVEMQ_HOST"
+            value: "gdit-digitus-service-activemq"
+          - name: "ACTIVEMQ_PORT"
+            value: "61616"
+          - name: "ACTIVEMQ_USER"
+            value: "admin"
+          - name: "ACTIVEMQ_PASS"
+            value: "admin"
+          - name: "QUEUE_ERROR"
+            value: "transaction-message-error"
+
+        #envFrom:
+         # - configMapRef:
+         #     name: digitus-configmap
+         # - secretRef:
+         #     name: digitus-secrets

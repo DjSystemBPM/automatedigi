@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-jbpm
+  labels:
+    app: gdit-digitus-service-jbpm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-jbpm
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-jbpm
+    spec:
+      containers:
+      - name: gdit-digitus-service-jbpm
+        image: cicd-pipeline.services.digitus/centos7-jbpm:7.34.0
+        #image: jboss/jbpm-server-full
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        ports:
+          - containerPort: 8080
+          - containerPort: 8001
+            protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets
+        volumeMounts:
+         - name: dev-jbpm-pv-git
+           mountPath: "/opt/jboss/wildfly/bin/.niogit"
+         - name: dev-jbpm-pv-m2
+           mountPath: "/opt/jboss/.m2"
+      volumes:
+      - name: dev-jbpm-pv-git
+        persistentVolumeClaim:
+          claimName: dev-jbpm-pvc-git
+      - name: dev-jbpm-pv-m2
+        persistentVolumeClaim:
+          claimName: dev-jbpm-pvc-m2
+

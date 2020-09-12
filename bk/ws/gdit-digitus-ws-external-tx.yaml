@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-external-tx
+  labels:
+    app: gdit-digitus-ws-external-tx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-external-tx
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-external-tx
+    spec:
+      containers:
+        - name: gdit-digitus-ws-external-tx
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/gdit-digitus-ws-external-tx:develop
+          env:
+            - name: "KEYCLOAK_EXTERNAL_API_REALM"
+              value: "gtorealm"
+            - name: "KEYCLOAK_EXTERNAL_API_RESOURCE"
+              value: "gto_client"
+            - name: "KEYCLOAK_EXTERNAL_REALM_KEY"
+              value: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg/Wq2lPZINRypMQwkRD5j20itJUqgXevc/N20zP3s76fEr5C+coRU09Vt785HEziU/bPzM9JZRDZYvAGpxcTvoiOEEJFhEPhbnZwEc+Evnvo8RM44HYlFVqYFOcsgg/aV2I0FLrQa7G0/vAdG2GLcN+R1FCk5o4N/0aT3WOoX0RIbV6xaXHd/h6kLEhkps/wWJf2XpAE6NJqwJJkh8xu78qqJHPpHJHTbDpaXgkQgVwI0Mrfy/daCahqJpX3fPh/w7bcx9dWcuhGkLP5NB843AvFtS8jDke0n3XFbmYeWajElHzJcNtzGjLZsnZB52Mcc9KPrdoDNzRyT3jkhgIvGwIDAQAB"
+            - name: "KEYCLOAK_EXTERNAL_URL"
+              value: "https://digitusservices.mx:31327/auth"
+            - name: "KEYCLOAK_EXTERNAL_API_CLIENT_KEY"
+              value: "digitus"
+            - name: "KEYCLOAK_EXTERNAL_API_CLIENT_KEYSTORE"
+              value: "keycloak.keystore"
+            - name: "KEYCLOAK_EXTERNAL_API_CLIENT_PASS"
+              value: "digitus"
+            - name: "KEYCLOAK_EXTERNAL_API_SECRET"
+              value: "6c6831d5-cb33-4383-a1f2-afc83b864555"
+            - name: "KEYCLOAK_EXTERNAL_API_TRUSTSTORE"
+              value: "keycloak.truststore"
+            - name: "KEYCLOAK_EXTERNAL_API_TRUSTSTORE_PASS"
+              value: "digitus"
+            - name: "SERVER_KEY_ALIAS"
+              value: "digitusservices.mx"
+            - name: "SERVER_KEY_STORE"
+              value: "/certs/digitusservices.mx.p12.keystore"
+            - name: "SERVER_KEY_PASSWORD"
+              value: "d1g1KeyP4ssStore"
+            - name: "JMS_CAMEL_URL"
+              value: "http://gdit-digitus-esb-external-search:8085/jms-digitus-external/search"
+            - name: "TZ"
+              value: "America/Mexico_City"
+             
+          ports:
+            - containerPort: 8443
+          volumeMounts:
+            - name: dev-pv-ws-external-tx-certs
+              mountPath: "/certs"
+      volumes:
+      - name: dev-pv-ws-external-tx-certs
+        persistentVolumeClaim:
+          claimName: dev-pvc-ws-external-tx-certs

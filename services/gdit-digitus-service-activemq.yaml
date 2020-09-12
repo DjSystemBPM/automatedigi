@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-activemq
+  labels:
+    app: gdit-digitus-service-activemq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-activemq
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-activemq
+    spec:
+      containers:
+        - name: gdit-digitus-service-activemq
+          imagePullPolicy: Always
+          image: 172.31.15.195/activemq:5.14.3
+          envFrom:
+            - configMapRef:
+                name: gdit-digitus-configmap
+            - secretRef:
+                name: gdit-digitus-secrets
+          ports:
+            - containerPort: 8161
+            - containerPort: 61616
+            - containerPort: 61613
+          volumeMounts:
+            - name: pv-service-activemq-data
+              mountPath: "/data/activemq"
+            - name: pv-service-activemq-logs
+              mountPath: "/var/log/activemq"
+      volumes:
+      - name: pv-service-activemq-data
+        persistentVolumeClaim:
+          claimName: pvc-service-activemq-data
+      - name: pv-service-activemq-logs
+        persistentVolumeClaim:
+          claimName: pvc-service-activemq-logs

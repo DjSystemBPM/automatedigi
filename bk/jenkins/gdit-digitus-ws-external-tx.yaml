@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-external-tx
+  labels:
+    app: gdit-digitus-ws-external-tx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-external-tx
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-external-tx
+    spec:
+      containers:
+      - name: gdit-digitus-ws-external-tx
+        imagePullPolicy: Always
+        image: 172.31.15.195/gdit-digitus-ws-external-tx:develop
+        ports:
+        - containerPort: 8443
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets

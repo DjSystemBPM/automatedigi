@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esb-nec-mock
+  labels:
+    app: esb-nec-mock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esb-nec-mock
+  template:
+    metadata:
+      labels:
+        app: esb-nec-mock
+    spec:
+      containers:
+      - name: esb-nec-mock
+        imagePullPolicy: Always
+        image: 172.31.15.195/esb-nec-mock:develop
+        ports:
+        - containerPort: 8881
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets

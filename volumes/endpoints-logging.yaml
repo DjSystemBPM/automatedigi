@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glusterfs-cluster
+  namespace: logging
+spec:
+  ports:
+    - port: 1
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: glusterfs-cluster
+  namespace: logging
+subsets:
+- addresses:
+  - ip: 172.31.4.13
+  ports:
+  - port: 1
+- addresses:
+  - ip: 172.31.4.14
+  ports:
+  - port: 1
+- addresses:
+  - ip: 172.31.4.15
+  ports:
+  - port: 1

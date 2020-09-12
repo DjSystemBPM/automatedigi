@@ -1,0 +1,57 @@
+Version: v1
+kind: ConfigMap
+metadata:
+  name: digitus-configmap
+data:
+  ACTIVEMQ_HOST: "gdit-digitus-service-activemq"
+  ACTIVEMQ_IP: "gdit-digitus-service-activemq"
+  ACTIVEMQ_PORT: "61616"
+  BPM_CONTAINER: "Biometrics-core_2.0.0-SNAPSHOT"
+  BPM_URL: "http://gdit-digitus-service-jbpm:8080"
+  DATABASE_IP: "172.31.0.25"
+  DATABASE_PORT: "9999"
+  DATABASE_SCHEMA_BIOANALISIS: "db_bioanalisis"
+  DATABASE_SCHEMA_DIGITUS: "0.1.3_db_digitus"
+  DATABASE_SCHEMA_FUSION: "0.1.2_db_fusion"
+  JBPM_DB_DRIVER: "postgres"
+  JBPM_DB_HOST: "172.31.0.25"
+  JBPM_DB_NAME: "db_jbpm"
+  JBPM_DB_PORT: "9999"
+  LOGSTASH_HOST: "logstash-in.development"
+  LOGSTASH_PORT: "12201"
+  MONGO_IP: "gdit-digitus-service-mongodb"
+  MONGO_PORT: "27017"
+#  NEC_SERVICE: http://172.31.4.182:8080/insights-ws/command/default/defaultCommandService
+  NEC_SERVICE: "http://172.31.0.182:8080/insights-ws/command/default/defaultCommandService"
+  POSTGRESQL_HOST: "172.31.0.25"
+  POSTGRESQL_PASS_FUSION: "$UsrFs10n$"
+  POSTGRESQL_PASS_STG: "$Usr3s4ll01$"
+  POSTGRESQL_PORT: "9999"
+  POSTGRESQL_SCHEMA_FUSION: "0.1.2_db_fusion"
+  POSTGRESQL_SCHEMA_STG: "db_staging_prod"
+  POSTGRESQL_USER_FUSION: "usr_fusion"
+  POSTGRESQL_USER_STG: "usr_staging"
+  REDIS_DB_FUS: "3"
+  REDIS_HOST: "gdit-digitus-service-redis"
+  REDIS_IP: "gdit-digitus-service-redis"
+  REDIS_PORT: "6379"
+  REDIS_SCHEMA_CACHE: "5"
+  REDIS_SCHEMA_ENGINE: "6"
+  TZ: "America/Mexico_City"
+  # Base de Datos Staging
+  DATABASE_IP: "172.31.0.25"
+  DATABASE_PORT: "9999"
+  DATABASE_SCHEMA_STAGING: "db_staging_prod"
+  DATABASE_USER_STAGING: "usr_staging"
+  DATABASE_PASS_STAGING: "$Usr3s4ll01$"
+  #Mongo
+  MONGO_IP: "172.31.0.102"
+  MONGO_PORT: "32451"
+  MONGO_USER: "admin"
+  MONGO_PASS: "admin"
+  MONGO_DB: "Digitus"
+  MONGO_COLLECTION: "DigitusJson"
+  #Kibana
+  LOGSTASH_HOST: "172.31.0.96"
+  LOGSTASH_PORT: "12201"
+

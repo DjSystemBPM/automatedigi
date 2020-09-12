@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-activemq
+  labels:
+    app: gdit-digitus-service-activemq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-activemq
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-activemq
+    spec:
+      containers:
+        - name: gdit-digitus-service-activemq
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/activemq:5.14.3
+          env:
+          - name: "TZ"
+            value: "America/Mexico_City"
+          - name: "ACTIVEMQ_CONFIG_NAME"
+            value: "amqp-srv1"
+          - name: "ACTIVEMQ_CONFIG_DEFAULTACCOUNT"
+            value: "false"
+          - name: "ACTIVEMQ_ADMIN_LOGIN"
+            value: "admin"
+          - name: "ACTIVEMQ_ADMIN_PASSWORD"
+            value: "admin"
+          - name: "ACTIVEMQ_USERS_myproducer"
+            value: "producerpassword"
+          - name: "ACTIVEMQ_GROUPS_writes"
+            value: "myproducer"
+          - name: "ACTIVEMQ_USERS_myconsumer"
+            value: "consumerpassword"
+          - name: "ACTIVEMQ_GROUPS_reads"
+            value: "myconsumer"
+          - name: "ACTIVEMQ_JMX_user1_role"
+            value: "readwrite"
+          - name: "ACTIVEMQ_JMX_user1_password"
+            value: "jmx_password"
+          - name: "ACTIVEMQ_JMX_user2_role"
+            value: "read"
+          - name: "ACTIVEMQ_JMX_user2_password"
+            value: "jmx2_password"
+          - name: "ACTIVEMQ_CONFIG_TOPICS_topic1"
+            value: "mytopic1"
+          - name: "ACTIVEMQ_CONFIG_TOPICS_topic2"
+            value: "mytopic2"
+          - name: "ACTIVEMQ_CONFIG_QUEUES_queue1"
+            value: "myqueue1"
+          - name: "ACTIVEMQ_CONFIG_QUEUES_queue2"
+            value: "mytopic2"
+          - name: "ACTIVEMQ_CONFIG_QUEUES_queue1"
+            value: "myqueue1"
+          - name: "ACTIVEMQ_CONFIG_QUEUES_queue2"
+            value: "myqueue2"
+          - name: "ACTIVEMQ_CONFIG_MINMEMORY"
+            value: "1024"
+          - name: "ACTIVEMQ_CONFIG_MAXMEMORY"
+            value: "4096"
+          - name: "ACTIVEMQ_CONFIG_SCHEDULERENABLED"
+            value: "true"
+
+          ports:
+            - containerPort: 8161
+            - containerPort: 61616
+            - containerPort: 61613
+          volumeMounts:
+            - name: dev-amq-pv-data
+              mountPath: "/data/activemq"
+            - name: dev-amq-pv-logs
+              mountPath: "/var/log/activemq"
+      volumes:
+      - name: dev-amq-pv-data
+        persistentVolumeClaim:
+          claimName: dev-amq-pvc-data
+      - name: dev-amq-pv-logs
+        persistentVolumeClaim:
+          claimName: dev-amq-pvc-logs
+

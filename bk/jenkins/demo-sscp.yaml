@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-sscp
+  labels:
+    app: demo-sscp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-sscp
+  template:
+    metadata:
+      labels:
+        app: demo-sscp
+    spec:
+      containers:
+      - name: demo-sscp
+        imagePullPolicy: Always
+        image: 172.31.15.195/demo-sscp:develop
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets

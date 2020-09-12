@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-data-query
+  labels:
+    app: gdit-digitus-ws-data-query
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-data-query
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-data-query
+    spec:
+      containers:
+      - name: gdit-digitus-ws-data-query
+        imagePullPolicy: Always
+        image: 172.31.15.195/gdit-digitus-ws-data-query:develop
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets

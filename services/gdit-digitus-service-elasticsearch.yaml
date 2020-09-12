@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: logging
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+    - name: http1
+      port: 9200
+      targetPort: 9200
+    - name: http2
+      port: 9300
+      targetPort: 9300
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: logging
+  labels:
+    app: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: 172.31.15.195/elasticsearch-oss:6.6.0
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        ports:
+          - name: elasticsearch
+            containerPort: 9200
+            containerPort: 9300
+        env:
+          - name: "TZ"
+            value: "America/Mexico_City"
+          - name: "bootstrap.memory_lock"
+            value: "false"
+          - name: "ES_JAVA_OPTS"
+            value: "-Xmx4g -Xms4g"
+        volumeMounts:
+        - name: pv-service-elasticsearch-data
+          mountPath: "/usr/share/elasticsearch/data"
+      volumes:
+      - name: pv-service-elasticsearch-data
+        persistentVolumeClaim:
+          claimName: pvc-service-elasticsearch-data

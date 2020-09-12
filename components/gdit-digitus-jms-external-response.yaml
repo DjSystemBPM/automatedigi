@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-jms-external-response
+  labels:
+    app: gdit-digitus-jms-external-response
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-jms-external-response
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-jms-external-response
+    spec:
+      containers:
+        - name: gdit-digitus-jms-external-response
+          imagePullPolicy: Always
+          image: 172.31.15.195/gdit-digitus-jms-external-response:gto
+          envFrom:
+            - configMapRef:
+                name: gdit-digitus-configmap
+            - secretRef:
+                name: gdit-digitus-secrets
+          ports:
+            - containerPort: 8079

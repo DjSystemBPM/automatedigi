@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-persistence-bioanalisis
+  labels:
+    app: gdit-digitus-ws-persistence-bioanalisis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-persistence-bioanalisis
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-persistence-bioanalisis
+    spec:
+      containers:
+      - name: gdit-digitus-ws-persistence-bioanalisis
+        imagePullPolicy: Always
+        image: 172.31.15.195/gdit-digitus-ws-persistence-bioanalisis:kubernetes
+        ports:
+        - containerPort: 8080
+        env:
+          - name: "spring.datasource.url"
+            value: jdbc:postgresql://172.31.0.25:9999/0.1.2_db_bioanalisis?useSSL=false"
+          - name: "spring.datasource.username"
+            value: "usr_bioanalisis"
+          - name: "spring.datasource.password"
+            value: "$Usr3b104l1s$"
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets
+

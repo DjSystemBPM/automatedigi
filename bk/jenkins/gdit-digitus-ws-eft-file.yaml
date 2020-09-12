@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-eft-file
+  labels:
+    app: gdit-digitus-ws-eft-file
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-eft-file
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-eft-file
+    spec:
+      containers:
+        - name: gdit-digitus-ws-eft-file
+          imagePullPolicy: Always
+          image: 172.31.15.195/gdit-digitus-ws-eft-file:develop
+          env:
+            - name: "GLUSTER_IWB_FTP"              
+              value: "http://gdit-digitus-esb-gluster:8075/ws-rest-gluster/digitus-upload-ibw"
+            - name: "TZ"
+              value: "America/Mexico_City"
+          ports:
+            - containerPort: 8080

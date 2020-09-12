@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-esb-tx-generator
+  labels:
+    app: gdit-digitus-esb-tx-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-esb-tx-generator
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-esb-tx-generator
+    spec:
+      containers:
+        - name: gdit-digitus-esb-tx-generator
+          imagePullPolicy: Always
+          image: 172.31.15.195/gdit-digitus-esb-tx-generator:gto
+          ports:
+            - containerPort: 8881
+          envFrom:
+            - configMapRef:
+                name: gdit-digitus-configmap
+            - secretRef:
+                name: gdit-digitus-secrets

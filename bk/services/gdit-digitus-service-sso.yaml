@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-sso
+  labels:
+    app: gdit-digitus-service-sso
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-sso
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-sso
+    spec:
+      containers:
+        - name: gdit-digitus-service-sso
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/rhel7-sso:7.3.5
+          env:
+            - name: "TZ"
+              value: "America/Mexico_City"
+          ports:
+            - containerPort: 8443
+            - containerPort: 9993
+          volumeMounts:
+            - name: dev-pv-service-sso-standalone
+              mountPath: "/opt/eap/standalone"
+      volumes:
+        - name: dev-pv-service-sso-standalone
+          persistentVolumeClaim:
+            claimName: dev-pvc-service-sso-standalone

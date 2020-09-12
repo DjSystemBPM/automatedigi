@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-redis
+  labels:
+    app: gdit-digitus-service-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-redis
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-redis
+    spec:
+      containers:
+      - name: gdit-digitus-service-redis
+        image: 172.31.15.195/redis-32-rhel7
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        ports:
+          - containerPort: 6379
+        envFrom:
+          - configMapRef:
+              name: gdit-digitus-configmap
+          - secretRef:
+              name: gdit-digitus-secrets

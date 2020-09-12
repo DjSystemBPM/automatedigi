@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-openldap
+  labels:
+    app: gdit-digitus-service-openldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-openldap
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-openldap
+    spec:
+      containers:
+        - name: gdit-digitus-service-openldap
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/debian9-openldap:2.4.0
+          env:
+            - name: "LDAP_ORGANISATION"
+              value: "Digitus"
+            - name: "LDAP_DOMAIN"
+              value: "digitus.com"
+            - name: "LDAP_ADMIN_PASSWORD"
+              value: "P@ss1W0Rd"
+            - name: "LDAP_CONFIG_PASSWORD"
+              value: "P@ss1W0Rd"
+            - name: "LDAP_READONLY_USER"
+              value: "true"
+            - name: "LDAP_READONLY_USER_USERNAME"
+              value: "ldap-ro"
+            - name: "LDAP_READONLY_USER_PASSWORD"
+              value: "P@ss1W0Rd"
+            - name: "TZ"
+              value: "America/Mexico_City"
+          ports:
+            - containerPort: 389
+            - containerPort: 636
+          volumeMounts:
+            - name: dev-pv-service-openldap-slapd
+              mountPath: "/etc/ldap/slapd.d"
+            - name: dev-pv-service-openldap-ldap
+              mountPath: "/var/lib/ldap"
+      volumes:
+      - name: dev-pv-service-openldap-slapd
+        persistentVolumeClaim:
+          claimName: dev-pvc-service-openldap-slapd
+      - name: dev-pv-service-openldap-ldap
+        persistentVolumeClaim:
+          claimName: dev-pvc-service-openldap-ldap

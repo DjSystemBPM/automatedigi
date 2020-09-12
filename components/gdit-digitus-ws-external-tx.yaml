@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-external-tx
+  labels:
+    app: gdit-digitus-ws-external-tx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-external-tx
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-external-tx
+    spec:
+      containers:
+        - name: gdit-digitus-ws-external-tx
+          imagePullPolicy: Always
+          image: 172.31.15.195/gdit-digitus-ws-external-tx:gto
+          envFrom:
+            - configMapRef:
+                name: gdit-digitus-configmap
+            - secretRef:
+                name: gdit-digitus-secrets
+          ports:
+            - containerPort: 8443
+          volumeMounts:
+            - name: pv-ws-external-tx-certs
+              mountPath: "/certs"
+      volumes:
+      - name: pv-ws-external-tx-certs
+        persistentVolumeClaim:
+          claimName: pvc-ws-external-tx-certs

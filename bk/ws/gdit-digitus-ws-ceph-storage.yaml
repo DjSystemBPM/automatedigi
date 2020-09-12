@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-ceph-storage
+  labels:
+    app: gdit-digitus-ws-ceph-storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-ceph-storage
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-ceph-storage
+    spec:
+      containers:
+        - name: gdit-digitus-ws-ceph-storage
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/ws_ceph_storage:0.1.10
+          env:
+            - name: "CEPH_MON"
+              value: "ceph_monitor01"
+            - name: "CEPH_MON_HOST"
+              value: "172.31.0.40"
+            - name: "CEPH_POOL"
+              value: "digitus_pool_rbd"
+            - name: "CEPH_FSID"
+              value: "3cd7758b-5b6b-4ec8-8074-d683bb8f6269"
+            - name: "CEPH_KEY"
+              value: "AQATdMRdZyZmCxAAyPlXjpc6EluAhLCfDezowQ=="
+            - name: "TZ"
+              value: "America/Mexico_City"
+          ports:
+            - containerPort: 8080
+            - containerPort: 9990

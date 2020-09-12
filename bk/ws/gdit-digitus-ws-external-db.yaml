@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-ws-external-db
+  labels:
+    app: gdit-digitus-ws-external-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-ws-external-db
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-ws-external-db
+    spec:
+      containers:
+        - name: gdit-digitus-ws-external-db
+          imagePullPolicy: Always
+          image: cicd-pipeline.services.digitus/gdit-digitus-ws-external-db:develop
+          env:
+            - name: "POSTGRESQL_HOST"
+              value: "172.31.0.25"
+            - name: "POSTGRESQL_PORT"
+              value: "9999"
+            - name: "POSTGRESQL_PASS_DIGITUS"
+              value: "$Usr3s4ll02$"
+            - name: "POSTGRESQL_PASS_FUSION"
+              value: "$UsrFs10n$"
+            - name: "POSTGRESQL_PASS_STG"
+              value: "$Usr3s4ll01$"
+            - name: "POSTGRESQL_SCHEMA_DIGITUS"
+              value: "0.1.4_db_digitus"
+            - name: "POSTGRESQL_SCHEMA_FUSION"
+              value: "0.1.3_db_fusion"
+            - name: "POSTGRESQL_SCHEMA_STG"
+              value: "db_staging_prod"
+            - name: "POSTGRESQL_USER_DIGITUS"
+              value: "usr_digitus"
+            - name: "POSTGRESQL_USER_FUSION"
+              value: "usr_fusion"
+            - name: "POSTGRESQL_USER_STG"
+              value: "usr_staging"
+            - name: "TZ"
+              value: "America/Mexico_City"
+          ports:
+            - containerPort: 8082
+

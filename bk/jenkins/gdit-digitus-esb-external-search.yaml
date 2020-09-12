@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-esb-external-search
+  labels:
+    app: gdit-digitus-esb-external-search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-esb-external-search
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-esb-external-search
+    spec:
+      containers:
+      - name: gdit-digitus-esb-external-search
+        imagePullPolicy: Always
+        image: 172.31.15.195/gdit-digitus-esb-external-search:develop
+        ports:
+        - containerPort: 8085
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets

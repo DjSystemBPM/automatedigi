@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-service-redis
+  labels:
+    app: gdit-digitus-service-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-service-redis
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-service-redis
+    spec:
+      containers:
+      - name: gdit-digitus-service-redis
+        image: cicd-pipeline.services.digitus/redis-32-rhel7
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        ports:
+          - containerPort: 6379
+        env:
+          - name: "TZ"
+            value: "America/Mexico_City"
+      #   volumeMounts:
+      #   - name: gv10-gdit-digitus-service-redis
+      #     mountPath: "/data"
+      # volumes:
+      # - name: gv10-gdit-digitus-service-redis
+      #   persistentVolumeClaim:
+      #     claimName: gluster-claim-gdit-digitus-service-redis
+

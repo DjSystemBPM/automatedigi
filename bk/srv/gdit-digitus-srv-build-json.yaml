@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gdit-digitus-srv-build-json
+  labels:
+    app: gdit-digitus-srv-build-json
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gdit-digitus-srv-build-json
+  template:
+    metadata:
+      labels:
+        app: gdit-digitus-srv-build-json
+    spec:
+      containers:
+      - name: gdit-digitus-srv-build-json
+        imagePullPolicy: Always
+        image: cicd-pipeline.services.digitus/srv_build_json:2.0.1
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: digitus-configmap
+          - secretRef:
+              name: digitus-secrets
+
